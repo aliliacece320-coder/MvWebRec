@@ -1,39 +1,33 @@
 # MvWebRec
 
-**MvWebRec** (Multi-View Web Recommendation) is a compact, demo-oriented recommendation project in a **Web Usage Mining** spirit: MovieLens ratings and timestamps are treated as implicit, time-stamped behavior. We build three bipartite **views**—full history (**global**), each user’s recent tail (**recent**), and a popularity-heavy subgraph (**frequency**). A single **LightGCN** with **shared weights** encodes users and items; **BPR** trains link-prediction-style ranking, and a light **InfoNCE** term aligns user embeddings across views. The focus is clear pipelines and visualization (Top-K and t-SNE), not novel architecture engineering.
+Multi-view graph recommendation on **MovieLens** treated as implicit, time-stamped **usage logs**. Three bipartite views are built from training interactions: **global** (full history), **recent** (last-`k` events per user), and **frequency** (edges to popular items). A **shared-weight LightGCN** encodes users and items; optimization uses **BPR** on the global view plus **InfoNCE** to align user embeddings across two views (global–recent in the full setup, global–frequency in the ablation). Evaluation reports **Recall@K** and **NDCG@K**; `demo.py` compares recommendations by view and can plot **t-SNE** when baseline checkpoints are provided.
 
-**Repository name on GitHub:** `MvWebRec` (this project).
-
-## Requirements
-
-- Python 3.10+
-- Dependencies: [`requirements.txt`](requirements.txt)
+## Setup
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-**Reproducible installs:** To capture exact versions on your machine:
-
-```bash
-pip freeze > requirements-lock.txt
-```
-
-`requirements-lock.txt` is **gitignored** in this repo; keep it locally or attach it to a release if you need pinned environments for others.
+Python **3.10+** recommended.
 
 ## Data
+
+Download **MovieLens-100K** into `data/ml-100k/`:
 
 ```bash
 bash data/download_ml100k.sh
 ```
 
-You should get `data/ml-100k/u.data`. The `data/ml-100k/` directory is **gitignored** so large data is not committed.
+Configure path and options in [`config.yaml`](config.yaml) (`data_dir`, `implicit_threshold`, `split`, `recent_k`, `frequency.quantile`, etc.).
 
-## Training
+## Train
 
-Three configs: baseline / ablation / full model.
+| Config | Role |
+|--------|------|
+| [`config_baseline.yaml`](config_baseline.yaml) | Global graph only, BPR |
+| [`config_ablation.yaml`](config_ablation.yaml) | Global + frequency views, InfoNCE (no recent view) |
+| [`config.yaml`](config.yaml) | Full: global + recent + frequency, BPR + InfoNCE |
 
 ```bash
 python train.py --config config_baseline.yaml
@@ -41,11 +35,7 @@ python train.py --config config_ablation.yaml
 python train.py --config config.yaml
 ```
 
-Optional overrides: `--mode baseline|full|ablation_no_recent`, `--checkpoint ./checkpoints/custom.pt`.
-
-Logs go to stderr by default. If `logging.file` is set in the YAML, logs are also written there. Per-epoch metrics are written to **`{checkpoint_basename}.metrics.csv`** next to the checkpoint (or path in `logging.metrics_csv`). Each training run **replaces** that CSV for the given checkpoint stem.
-
-**Early stopping:** if `train.early_stop_patience > 0`, training stops when validation `recall@K` (first `K` in `eval_ks`) does not improve for that many epochs. The saved checkpoint is still the best validation checkpoint.
+Optional: `--mode …`, `--checkpoint …`. Checkpoints and per-run metrics CSV go under `checkpoints/` (ignored by git). **Early stopping** uses `train.early_stop_patience` on validation `recall@K` (`K` = first value in `eval_ks`). Logging: `logging` section in YAML.
 
 ## Demo
 
@@ -57,7 +47,7 @@ python demo.py \
   --user_id 5
 ```
 
-Figures (e.g. flowchart, degree plot, t-SNE) are written under `visualization/` when you run `demo.py`; **PNG outputs are not tracked in Git** (regenerate locally).
+Writes figures under `visualization/` (e.g. flowchart, view degrees, t-SNE comparison).
 
 ## Tests
 
@@ -65,11 +55,7 @@ Figures (e.g. flowchart, degree plot, t-SNE) are written under `visualization/` 
 pytest tests/ -q
 ```
 
-## Credits
+## References
 
-- **MovieLens:** [GroupLens](https://grouplens.org/datasets/movielens/) — use per their terms.
-- **LightGCN:** He et al., *LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation* — this repo is a simplified teaching-style implementation, not an official reproduction.
-
-## Further ideas
-
-See [`improvement.md`](improvement.md).
+- **MovieLens** — [GroupLens](https://grouplens.org/datasets/movielens/)
+- **LightGCN** — He et al., *LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation*
