@@ -1,5 +1,7 @@
 # MvWebRec
 
+**Languages:** English | [**简体中文**](README.zh-CN.md)
+
 Multi-view graph recommendation on **MovieLens** treated as implicit, time-stamped **usage logs**. Three bipartite views are built from training interactions: **global** (full history), **recent** (last-`k` events per user), and **frequency** (edges to popular items). A **shared-weight LightGCN** encodes users and items; optimization uses **BPR** on the global view plus **InfoNCE** to align user embeddings across two views. Evaluation reports **Recall@K** and **NDCG@K**; `demo.py` compares recommendations by view and can plot **t-SNE** when baseline checkpoints are provided.
 
 ## Layout
