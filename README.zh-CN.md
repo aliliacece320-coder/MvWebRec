@@ -11,6 +11,7 @@
 ├── configs/              # YAML 实验配置
 ├── data/                 # 运行时数据（ml-100k/ 已 gitignore）
 ├── docs/                 # 笔记（如改进思路）
+├── .cursor/rules/        # Cursor 代理规则（Git + README 同步）
 ├── scripts/              # 下载等辅助脚本
 ├── src/mvwebrec/         # Python 包（datasets、models、utils、visualization）
 ├── tests/
@@ -73,6 +74,10 @@ python demo.py \
 ```bash
 pytest tests/ -q
 ```
+
+## 仓库维护
+
+- **Cursor：**代理与协作者的约定见 [`.cursor/rules/`](.cursor/rules/)。有实质改动时：**提交**代码、在具备凭据时推送到 **GitHub**；若使用方式、目录结构或安装步骤有变，须在同一提交中同步更新 [`README.md`](README.md) 与 [`README.zh-CN.md`](README.zh-CN.md)。
 
 ## 参考文献
 
