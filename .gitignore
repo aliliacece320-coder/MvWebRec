@@ -20,6 +20,13 @@ data/ml-100k/
 # Training outputs
 checkpoints/
 runs/
+*.metrics.csv
+
+# Demo-generated figures (regenerate with python demo.py)
+visualization/*.png
+
+# Machine-specific lockfile (generate locally with pip freeze)
+requirements-lock.txt
 
 # Pytest / coverage
 .pytest_cache/
