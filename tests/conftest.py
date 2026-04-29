@@ -1,4 +1,4 @@
-"""Pytest path setup: resolve imports for ``mvwebrec`` without editable install."""
+"""Pytest path setup: resolve imports for ``hetubv_gcl`` without editable install."""
 from __future__ import annotations
 
 import sys

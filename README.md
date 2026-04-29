@@ -1,6 +1,8 @@
-# MvWebRec
+# HetUBV-GCL
 
 **Languages:** English | [**简体中文**](README.zh-CN.md)
+
+*Modeling Heterogeneous User Behavior Views in Web Usage Mining via Graph Contrastive Learning.*
 
 Multi-view graph recommendation on **MovieLens** treated as implicit, time-stamped **usage logs**. Three bipartite views are built from training interactions: **global** (full history), **recent** (last-`k` events per user), and **frequency** (edges to popular items). A **shared-weight LightGCN** encodes users and items; optimization uses **BPR** on the global view plus **InfoNCE** to align user embeddings across two views. Evaluation reports **Recall@K** and **NDCG@K**; `demo.py` compares recommendations by view and can plot **t-SNE** when baseline checkpoints are provided.
 
@@ -12,10 +14,10 @@ Multi-view graph recommendation on **MovieLens** treated as implicit, time-stamp
 ├── data/                 # runtime data (ml-100k/ gitignored)
 ├── docs/                 # notes (e.g. improvement ideas)
 ├── scripts/              # download helpers
-├── src/mvwebrec/         # Python package (datasets, models, utils, visualization)
+├── src/hetubv_gcl/       # Python package (datasets, models, utils, visualization)
 ├── tests/
-├── train.py              # CLI entry → mvwebrec.train
-├── demo.py               # CLI entry → mvwebrec.demo
+├── train.py              # CLI entry → hetubv_gcl.train
+├── demo.py               # CLI entry → hetubv_gcl.demo
 └── pyproject.toml
 ```
 
@@ -77,6 +79,8 @@ pytest tests/ -q
 ## Maintenance
 
 After substantive changes that affect usage, layout, or setup: **commit** and push to GitHub when you can; update **both** [`README.md`](README.md) and [`README.zh-CN.md`](README.zh-CN.md) so they stay aligned.
+
+**GitHub repo name:** this codebase is branded **HetUBV-GCL**; you can rename the repository to `hetubv-gcl` in *Settings → General*. Then run `git remote set-url origin https://github.com/PatoMc320/hetubv-gcl.git` (or your new username).
 
 ## References
 

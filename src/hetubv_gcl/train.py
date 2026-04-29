@@ -15,18 +15,18 @@ import torch
 import yaml
 from tqdm import tqdm
 
-from mvwebrec.datasets.preprocessing import build_dataset, print_stats
-from mvwebrec.models.lightgcn import LightGCN, scipy_csr_to_torch_sparse_float
-from mvwebrec.paths import repo_root
-from mvwebrec.utils.graph_views import (
+from hetubv_gcl.datasets.preprocessing import build_dataset, print_stats
+from hetubv_gcl.models.lightgcn import LightGCN, scipy_csr_to_torch_sparse_float
+from hetubv_gcl.paths import repo_root
+from hetubv_gcl.utils.graph_views import (
     build_all_views,
     graph_stats,
     print_user_view_example,
     print_view_summary,
 )
-from mvwebrec.utils.losses import bpr_loss, infonce_user_alignment
-from mvwebrec.utils.metrics import recall_ndcg_at_k
-from mvwebrec.utils.seed import set_seed
+from hetubv_gcl.utils.losses import bpr_loss, infonce_user_alignment
+from hetubv_gcl.utils.metrics import recall_ndcg_at_k
+from hetubv_gcl.utils.seed import set_seed
 
 
 def _train_pos_dict(bundle) -> Dict[int, Set[int]]:

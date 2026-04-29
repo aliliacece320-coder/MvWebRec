@@ -1,4 +1,4 @@
-from mvwebrec.utils.graph_views import build_global_view, build_recent_view
+from hetubv_gcl.utils.graph_views import build_global_view, build_recent_view
 
 
 def test_global_view_shape_and_nnz():

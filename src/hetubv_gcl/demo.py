@@ -8,13 +8,13 @@ from typing import Dict, List, Set, Tuple
 import numpy as np
 import torch
 
-from mvwebrec.datasets.preprocessing import build_dataset, print_stats
-from mvwebrec.models.lightgcn import LightGCN, scipy_csr_to_torch_sparse_float
-from mvwebrec.paths import repo_root
-from mvwebrec.utils.graph_views import build_all_views, print_user_view_example
-from mvwebrec.utils.metrics import recall_ndcg_at_k, topk_items
-from mvwebrec.visualization.plot_tsne import plot_tsne_two_models
-from mvwebrec.visualization.plot_views import plot_pipeline_flowchart, plot_view_degrees
+from hetubv_gcl.datasets.preprocessing import build_dataset, print_stats
+from hetubv_gcl.models.lightgcn import LightGCN, scipy_csr_to_torch_sparse_float
+from hetubv_gcl.paths import repo_root
+from hetubv_gcl.utils.graph_views import build_all_views, print_user_view_example
+from hetubv_gcl.utils.metrics import recall_ndcg_at_k, topk_items
+from hetubv_gcl.visualization.plot_tsne import plot_tsne_two_models
+from hetubv_gcl.visualization.plot_views import plot_pipeline_flowchart, plot_view_degrees
 
 
 def load_config_from_ckpt(ck: dict) -> dict:

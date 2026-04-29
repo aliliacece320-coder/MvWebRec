@@ -9,7 +9,7 @@ _src = _root / "src"
 if _src.is_dir() and str(_src) not in sys.path:
     sys.path.insert(0, str(_src))
 
-from mvwebrec.demo import main
+from hetubv_gcl.demo import main
 
 if __name__ == "__main__":
     main()
