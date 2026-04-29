@@ -1,7 +1,7 @@
 """Loss sanity checks."""
 import torch
 
-from utils.losses import bpr_loss, infonce_user_alignment
+from mvwebrec.utils.losses import bpr_loss, infonce_user_alignment
 
 
 def test_bpr_loss_finite():

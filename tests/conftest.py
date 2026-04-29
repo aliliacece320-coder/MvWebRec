@@ -1,6 +1,10 @@
-import os
-import sys
+"""Pytest path setup: resolve imports for ``mvwebrec`` without editable install."""
+from __future__ import annotations
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+import sys
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent.parent
+_SRC = _ROOT / "src"
+if str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import torch
 
-from utils.metrics import recall_ndcg_at_k
+from mvwebrec.utils.metrics import recall_ndcg_at_k
 
 
 class _StubRecModel(torch.nn.Module):

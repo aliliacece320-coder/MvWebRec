@@ -26,7 +26,7 @@ def _read_ml100k_ratings(data_dir: str) -> List[Tuple[int, int, int, int]]:
     path = os.path.join(data_dir, "u.data")
     if not os.path.isfile(path):
         raise FileNotFoundError(
-            f"Missing {path}. Run: bash data/download_ml100k.sh"
+            f"Missing {path}. Run: bash scripts/download_ml100k.sh"
         )
     rows: List[Tuple[int, int, int, int]] = []
     with open(path, "r", encoding="latin-1") as f:

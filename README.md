@@ -1,11 +1,32 @@
 # MvWebRec
 
-Multi-view graph recommendation on **MovieLens** treated as implicit, time-stamped **usage logs**. Three bipartite views are built from training interactions: **global** (full history), **recent** (last-`k` events per user), and **frequency** (edges to popular items). A **shared-weight LightGCN** encodes users and items; optimization uses **BPR** on the global view plus **InfoNCE** to align user embeddings across two views (global–recent in the full setup, global–frequency in the ablation). Evaluation reports **Recall@K** and **NDCG@K**; `demo.py` compares recommendations by view and can plot **t-SNE** when baseline checkpoints are provided.
+Multi-view graph recommendation on **MovieLens** treated as implicit, time-stamped **usage logs**. Three bipartite views are built from training interactions: **global** (full history), **recent** (last-`k` events per user), and **frequency** (edges to popular items). A **shared-weight LightGCN** encodes users and items; optimization uses **BPR** on the global view plus **InfoNCE** to align user embeddings across two views. Evaluation reports **Recall@K** and **NDCG@K**; `demo.py` compares recommendations by view and can plot **t-SNE** when baseline checkpoints are provided.
+
+## Layout
+
+```text
+.
+├── configs/              # YAML experiment configs
+├── data/                 # runtime data (ml-100k/ gitignored)
+├── docs/                 # notes (e.g. improvement ideas)
+├── scripts/              # download helpers
+├── src/mvwebrec/         # Python package (datasets, models, utils, visualization)
+├── tests/
+├── train.py              # CLI entry → mvwebrec.train
+├── demo.py               # CLI entry → mvwebrec.demo
+└── pyproject.toml
+```
 
 ## Setup
 
 ```bash
 python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"    # editable install + pytest
+```
+
+Alternatively install dependencies only (root `train.py` / `demo.py` add `src/` to `sys.path` so the package runs without `-e`):
+
+```bash
 pip install -r requirements.txt
 ```
 
@@ -13,29 +34,27 @@ Python **3.10+** recommended.
 
 ## Data
 
-Download **MovieLens-100K** into `data/ml-100k/`:
-
 ```bash
-bash data/download_ml100k.sh
+bash scripts/download_ml100k.sh
 ```
 
-Configure path and options in [`config.yaml`](config.yaml) (`data_dir`, `implicit_threshold`, `split`, `recent_k`, `frequency.quantile`, etc.).
+Produces `data/ml-100k/u.data`. Tune paths and flags in [`configs/config.yaml`](configs/config.yaml).
 
 ## Train
 
 | Config | Role |
 |--------|------|
-| [`config_baseline.yaml`](config_baseline.yaml) | Global graph only, BPR |
-| [`config_ablation.yaml`](config_ablation.yaml) | Global + frequency views, InfoNCE (no recent view) |
-| [`config.yaml`](config.yaml) | Full: global + recent + frequency, BPR + InfoNCE |
+| [`configs/config_baseline.yaml`](configs/config_baseline.yaml) | Global graph only, BPR |
+| [`configs/config_ablation.yaml`](configs/config_ablation.yaml) | Global + frequency, InfoNCE (no recent view) |
+| [`configs/config.yaml`](configs/config.yaml) | Full model |
 
 ```bash
-python train.py --config config_baseline.yaml
-python train.py --config config_ablation.yaml
-python train.py --config config.yaml
+python train.py --config configs/config_baseline.yaml
+python train.py --config configs/config_ablation.yaml
+python train.py --config configs/config.yaml
 ```
 
-Optional: `--mode …`, `--checkpoint …`. Checkpoints and per-run metrics CSV go under `checkpoints/` (ignored by git). **Early stopping** uses `train.early_stop_patience` on validation `recall@K` (`K` = first value in `eval_ks`). Logging: `logging` section in YAML.
+Default `--config` is `configs/config.yaml`. Optional: `--mode …`, `--checkpoint …`. Outputs go to `checkpoints/` and `visualization/` (see `.gitignore`).
 
 ## Demo
 
@@ -46,8 +65,6 @@ python demo.py \
   --ablation_ckpt ./checkpoints/model_ablation.pt \
   --user_id 5
 ```
-
-Writes figures under `visualization/` (e.g. flowchart, view degrees, t-SNE comparison).
 
 ## Tests
 
