@@ -1,0 +1,38 @@
+dataset: ml100k
+data_dir: ./data/ml-100k
+implicit_threshold: 4
+
+split:
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+
+recent_k: 10
+frequency:
+  mode: item_quantile
+  quantile: 0.65
+
+model:
+  embed_dim: 64
+  n_layers: 3
+
+train:
+  lr: 0.001
+  epochs: 80
+  batch_size: 2048
+  lambda_cl: 0.1
+  tau: 0.2
+  eval_ks: [10, 20]
+  seed: 42
+  neg_ratio: 1
+  early_stop_patience: 15
+
+logging:
+  level: INFO
+  file: ""
+  metrics_csv: ""
+
+mode: baseline
+
+device: cpu
+checkpoint_path: ./checkpoints/model_baseline.pt

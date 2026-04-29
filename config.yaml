@@ -1,0 +1,45 @@
+# Web Usage Mining style: ratings + timestamps as implicit click logs
+dataset: ml100k
+data_dir: ./data/ml-100k
+implicit_threshold: 4
+
+split:
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+
+recent_k: 10
+frequency:
+  mode: item_quantile
+  quantile: 0.65
+
+model:
+  embed_dim: 64
+  n_layers: 3
+
+train:
+  lr: 0.001
+  epochs: 80
+  batch_size: 2048
+  lambda_cl: 0.03
+  tau: 0.2
+  eval_ks: [10, 20]
+  seed: 42
+  neg_ratio: 1
+  # 验证集 recall@K（K 为 eval_ks 首项）连续无提升则停止；0 表示关闭早停
+  early_stop_patience: 15
+
+logging:
+  level: INFO
+  # 可选绝对或相对路径；留空则只输出到 stderr
+  file: ""
+  # 留空则写入 checkpoints/<checkpoint文件名不含后缀>.metrics.csv
+  metrics_csv: ""
+
+# full: Global+Recent+Frequency + BPR + InfoNCE
+# baseline: Global only + BPR (no contrastive)
+# ablation_no_recent: Global+Frequency + InfoNCE (align global vs frequency)
+mode: full
+
+device: cpu
+checkpoint_path: ./checkpoints/model.pt
