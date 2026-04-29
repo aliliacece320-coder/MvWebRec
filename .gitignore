@@ -14,6 +14,7 @@ venv/
 .ipynb_checkpoints/
 .idea/
 .vscode/
+.cursor/
 *.swp
 
 # Data & artifacts (regenerate with bash data/download_ml100k.sh)

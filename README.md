@@ -11,7 +11,6 @@ Multi-view graph recommendation on **MovieLens** treated as implicit, time-stamp
 ├── configs/              # YAML experiment configs
 ├── data/                 # runtime data (ml-100k/ gitignored)
 ├── docs/                 # notes (e.g. improvement ideas)
-├── .cursor/rules/       # Cursor agent rules (git + README sync)
 ├── scripts/              # download helpers
 ├── src/mvwebrec/         # Python package (datasets, models, utils, visualization)
 ├── tests/
@@ -77,7 +76,7 @@ pytest tests/ -q
 
 ## Maintenance
 
-- **Cursor:** Project rules for agents and contributors live under [`.cursor/rules/`](.cursor/rules/). After substantive changes: **commit**, push to **GitHub** when credentials allow, and update **both** [`README.md`](README.md) and [`README.zh-CN.md`](README.zh-CN.md) when usage, layout, or setup changes.
+After substantive changes that affect usage, layout, or setup: **commit** and push to GitHub when you can; update **both** [`README.md`](README.md) and [`README.zh-CN.md`](README.zh-CN.md) so they stay aligned.
 
 ## References
 
